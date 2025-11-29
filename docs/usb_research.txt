@@ -1,0 +1,22 @@
+Project: USB Storage Management Tool
+
+1. USB DETECTION ON WINDOWS (C++)
+---------------------------------
+Windows provides several system APIs to detect USB storage devices:
+
+A GetLogicalDrives()
+   - Returns a bitmask representing all available drive letters.
+   - Example: iterate letters A–Z to find connected drives.
+
+B GetDriveTypeA("X:\\")
+   - Checks the type of a drive.
+   - DRIVE_REMOVABLE usually indicates a USB flash drive.
+   - Simplest and most commonly used method.
+
+C WM_DEVICECHANGE event
+   - Triggered when devices are plugged in or removed.
+   - Useful for event-driven programs.
+
+D DeviceIoControl()
+   - Advanced method to query hardware details.
+   - Can obtain information like vendor, product, and storage type.
