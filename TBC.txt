@@ -1,2 +1,2 @@
-g++ src/main.cpp src/USBManager.cpp -o usb_tool.exe
-.\usb_tool.exe
+g++ main.cpp USBManager.cpp -o USBApp.exe -std=c++17
+.\USBApp.exe
