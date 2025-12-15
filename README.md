@@ -26,7 +26,7 @@ The application runs in the Windows console and is meant only for learning and t
 - Rares – Developer
 - Darius – Hardware
 - Dragos – Tester
-- Ionut – Project Manager
+- Ionut – Project Manager & Interface/UX
 
 ---
 
