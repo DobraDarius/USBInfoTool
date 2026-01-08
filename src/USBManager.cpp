@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <iostream>
 #include <filesystem>
+#include <cmath> // For rounding if needed
 
 namespace fs = std::filesystem;
 
@@ -21,8 +22,8 @@ USBDevice USBManager::getDriveInfo(char driveLetter) {
     root += driveLetter;
     root += ":\\";
 
+    // 1. GET SPACE INFO
     ULARGE_INTEGER freeBytesAvailable, totalBytes, freeBytes;
-
     if (GetDiskFreeSpaceExA(root.c_str(), &freeBytesAvailable, &totalBytes, &freeBytes)) {
         dev.totalSpaceGB = totalBytes.QuadPart / (1024.0 * 1024.0 * 1024.0);
         dev.freeSpaceGB  = freeBytes.QuadPart / (1024.0 * 1024.0 * 1024.0);
@@ -31,13 +32,33 @@ USBDevice USBManager::getDriveInfo(char driveLetter) {
         dev.freeSpaceGB  = 0;
     }
 
+    // 2. GET VOLUME LABEL (NEW)
+    char volumeName[MAX_PATH + 1] = {0};
+    char fileSysName[MAX_PATH + 1] = {0};
+    
+    // This Windows function fetches the drive name (Volume Label)
+    if (GetVolumeInformationA(
+            root.c_str(), 
+            volumeName, 
+            MAX_PATH, 
+            NULL, NULL, NULL, 
+            fileSysName, 
+            MAX_PATH)) {
+        
+        dev.label = volumeName;
+    }
+    
+    // Fallback if name is empty
+    if (dev.label.empty()) {
+        dev.label = "USB Drive"; 
+    }
+
     return dev;
 }
 
 std::vector<USBDevice> USBManager::detectUSBDevices() {
     std::vector<USBDevice> usbList;
-
-    DWORD drives = GetLogicalDrives(); // Bitmask of available drives
+    DWORD drives = GetLogicalDrives();
 
     for (char c = 'A'; c <= 'Z'; c++) {
         if (drives & (1 << (c - 'A'))) {
@@ -46,25 +67,9 @@ std::vector<USBDevice> USBManager::detectUSBDevices() {
             }
         }
     }
-
     return usbList;
 }
 
 void USBManager::listFiles(char driveLetter) {
-    std::string path = std::string(1, driveLetter) + ":\\";
-    
-    try {
-        if (fs::exists(path) && fs::is_directory(path)) {
-            std::cout << "Files on " << path << ":\n";
-            for (const auto& entry : fs::directory_iterator(path)) {
-                std::cout << " - " << entry.path().filename().string();
-                if (fs::is_directory(entry.status())) {
-                    std::cout << " [DIR]";
-                }
-                std::cout << "\n";
-            }
-        }
-    } catch (const fs::filesystem_error& e) {
-        std::cout << "Error accessing drive: " << e.what() << "\n";
-    }
+    // (Keep your existing listFiles code here if you still need the console version)
 }
