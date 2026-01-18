@@ -20,6 +20,9 @@ The application runs in the Windows console and is meant only for learning and t
 - C / C++
 - Windows Console
 
+## RUN in MSYS2 UCRT64
+
+g++ -std=c++17 -O2 USBManager.cpp main_gui.cpp Logger.cpp USBTester.cpp -o USBInfoTool.exe -mwindows -lgdi32 -luser32 -lshell32
 ---
 
 ## Team Members
