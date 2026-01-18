@@ -1,6 +1,11 @@
 #include <iostream>
 #include <string>
 #include "USBManager.h"
+<<<<<<< HEAD
+=======
+#include "Logger.h"
+
+>>>>>>> ee175ca (Added speed test and updated UI)
 
 void printHelp() {
     std::cout << "\nAvailable commands:\n";
@@ -17,6 +22,11 @@ void printDriveHelp() {
 }
 
 int main() {
+<<<<<<< HEAD
+=======
+    Logger::Init("usbtool.log");
+    Logger::Info("Console app started");
+>>>>>>> ee175ca (Added speed test and updated UI)
     USBManager usbManager;
     std::string command;
     char selectedDrive = 0; 
@@ -79,9 +89,30 @@ int main() {
                 std::cout << "Returned to main menu.\n";
             }
             else if (command == "ls") {
+<<<<<<< HEAD
                 // Calls the function from Week 3
                 usbManager.listFiles(selectedDrive);
             }
+=======
+    std::string root = std::string(1, selectedDrive) + ":\\";
+    auto files = usbManager.getFiles(root);
+
+    if (files.empty()) {
+        std::cout << "(No files or cannot access directory)\n";
+    } else {
+        for (const auto& f : files) {
+            std::cout << (f.isDirectory ? "[DIR] " : "      ")
+                      << f.name;
+
+            if (!f.isDirectory) {
+                std::cout << " (" << f.size << " bytes)";
+            }
+            std::cout << "\n";
+        }
+    }
+}
+
+>>>>>>> ee175ca (Added speed test and updated UI)
             else if (command == "info") {
                 std::cout << "[Info feature in progress for drive " << selectedDrive << "]\n";
             }

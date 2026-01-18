@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### For compiling the console program###
 g++ main.cpp USBManager.cpp -o USBApp.exe -std=c++17
 .\USBApp.exe
@@ -5,3 +6,7 @@ g++ main.cpp USBManager.cpp -o USBApp.exe -std=c++17
 ### For compiling the Windows GUi program###
 g++ main_gui.cpp USBManager.cpp -o USBToolGUI.exe -mwindows -static -std=c++17
 .\USBToolGUI.exe
+=======
+g++ main.cpp USBManager.cpp -o USBApp.exe -std=c++17
+.\USBApp.exe
+>>>>>>> ee175ca (Added speed test and updated UI)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 =================================
         USB INFORMATION TOOL
 =================================
@@ -7,4 +8,15 @@ Total Size:  16 GB
 Free Space:   8 GB
 
 Status: Ready
+=======
+=================================
+        USB INFORMATION TOOL
+=================================
+Device Name: Kingston USB
+File System: FAT32
+Total Size:  16 GB
+Free Space:   8 GB
+
+Status: Ready
+>>>>>>> ee175ca (Added speed test and updated UI)
 =================================
