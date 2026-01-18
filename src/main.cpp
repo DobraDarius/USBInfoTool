@@ -1,8 +1,9 @@
 #include <iostream>
 #include <string>
-#include <cctype>
 #include "USBManager.h"
 #include "Logger.h"
+#include "USBTester.h"
+
 
 void printHelp() {
     std::cout << "\nAvailable commands:\n";
@@ -21,31 +22,44 @@ void printDriveHelp() {
 int main() {
     Logger::Init("usbtool.log");
     Logger::Info("Console app started");
-
     USBManager usbManager;
     std::string command;
-    char selectedDrive = 0;
+    char selectedDrive = 0; 
 
     std::cout << "=== USB Storage Management Tool ===\n";
     std::cout << "Type 'help' for a list of commands.\n\n";
 
     while (true) {
+        // here we display a prompt which resembles the terminal
         if (selectedDrive == 0) {
             std::cout << "USB-Tool > ";
         } else {
             std::cout << "USB-Tool (" << selectedDrive << ":) > ";
         }
 
+        // 2. Read command
         std::cin >> command;
 
+        // 3. Process command
         if (command == "exit") {
             std::cout << "Exiting application...\n";
-            break;
-        }
+            break; 
+        } 
         else if (command == "help") {
             if (selectedDrive == 0) printHelp();
             else printDriveHelp();
         }
+        else if (command == "speed") {
+    // Example: test selectedDrive with 256MB
+    auto res = USBTester::TestSpeed(selectedDrive, 256, false);
+    if (!res.ok) {
+        std::cout << "Speed test failed: " << res.error << "\n";
+    } else {
+        std::cout << "Write: " << res.writeMBps << " MB/s\n";
+        std::cout << "Read : " << res.readMBps  << " MB/s\n";
+    }
+}
+
         else if (selectedDrive == 0) {
             // --- MAIN MENU COMMANDS ---
             if (command == "list") {
@@ -55,48 +69,50 @@ int main() {
                 } else {
                     std::cout << "Connected Drives:\n";
                     for (auto& dev : devices) {
-                        std::cout << " - Drive " << dev.driveLetter << ": ("
-                                  << dev.freeSpaceGB << " GB free / "
+                        std::cout << " - Drive " << dev.driveLetter << ": (" 
+                                  << dev.freeSpaceGB << " GB free / " 
                                   << dev.totalSpaceGB << " GB total)\n";
                     }
                 }
-            }
+            } 
             else if (command == "select") {
                 char letter;
-                std::cin >> letter;
-                letter = static_cast<char>(std::toupper(static_cast<unsigned char>(letter)));
-
+                std::cin >> letter; // Read the drive letter
+                letter = toupper(letter); // Convert to uppercase
+                
+                // Simple validation could be added here
                 selectedDrive = letter;
                 std::cout << "Selected drive " << selectedDrive << "\n";
             }
             else {
                 std::cout << "Unknown command. Try 'list' or 'select <letter>'.\n";
             }
-        }
+        } 
         else {
             // --- DRIVE SPECIFIC COMMANDS ---
             if (command == "..") {
-                selectedDrive = 0;
+                selectedDrive = 0; // Return to main menu
                 std::cout << "Returned to main menu.\n";
             }
             else if (command == "ls") {
-                std::string root = std::string(1, selectedDrive) + ":\\";
-                auto files = usbManager.getFiles(root);
+    std::string root = std::string(1, selectedDrive) + ":\\";
+    auto files = usbManager.getFiles(root);
 
-                if (files.empty()) {
-                    std::cout << "(No files or cannot access directory)\n";
-                } else {
-                    for (const auto& f : files) {
-                        std::cout << (f.isDirectory ? "[DIR] " : "      ")
-                                  << f.name;
+    if (files.empty()) {
+        std::cout << "(No files or cannot access directory)\n";
+    } else {
+        for (const auto& f : files) {
+            std::cout << (f.isDirectory ? "[DIR] " : "      ")
+                      << f.name;
 
-                        if (!f.isDirectory) {
-                            std::cout << " (" << f.size << " bytes)";
-                        }
-                        std::cout << "\n";
-                    }
-                }
+            if (!f.isDirectory) {
+                std::cout << " (" << f.size << " bytes)";
             }
+            std::cout << "\n";
+        }
+    }
+}
+
             else if (command == "info") {
                 std::cout << "[Info feature in progress for drive " << selectedDrive << "]\n";
             }
