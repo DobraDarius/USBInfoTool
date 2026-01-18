@@ -4,10 +4,10 @@
 #include <filesystem>
 #include <algorithm>
 #include <fstream>
-<<<<<<< HEAD
-=======
+
+
 #include "Logger.h"
->>>>>>> ee175ca (Added speed test and updated UI)
+
 
 namespace fs = std::filesystem;
 
@@ -49,10 +49,10 @@ USBDevice USBManager::getDriveInfo(char driveLetter) {
 
 std::vector<USBDevice> USBManager::detectUSBDevices() {
     std::vector<USBDevice> usbList;
-<<<<<<< HEAD
-=======
+
+
     Logger::Info("Detecting USB devices...");
->>>>>>> ee175ca (Added speed test and updated UI)
+
     DWORD drives = GetLogicalDrives();
     for (char c = 'A'; c <= 'Z'; c++) {
         if (drives & (1 << (c - 'A'))) {
