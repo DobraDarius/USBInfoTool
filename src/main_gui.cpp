@@ -11,9 +11,11 @@
 #include <algorithm>
 #include "USBManager.h"
 #include "USBTester.h"
-#include "USBManager.h"
 #include "Logger.h"
 #include <thread>
+
+
+
 #pragma comment(lib, "Comctl32.lib")
 
 #define ID_LISTVIEW 100
@@ -191,18 +193,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         CreateWindow("STATIC", "Search:", WS_CHILD | WS_VISIBLE, 350, 15, 50, 20, hwnd, NULL, NULL, NULL);
         hSearchBox = CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 400, 12, 170, 25, hwnd, (HMENU)ID_SEARCH_BOX, NULL, NULL);
 
-
-
         CreateWindowA(
-        "BUTTON",
-        "Speed Test",
-        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        20, 380, 120, 30,   // pick coordinates that fit your UI
-        hwnd,
-        (HMENU)IDC_SPEEDTEST,
-        (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE),
-        NULL
-    );
+    "BUTTON",
+    "Speed Test",
+    WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
+    20, 380, 120, 30,      // x, y, width, height (adjust)
+    hwnd,
+    (HMENU)IDC_SPEEDTEST,
+    (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE),
+    NULL
+);
 
 
         RefreshView(hwnd);
@@ -279,8 +279,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             } else MessageBox(hwnd, "Select an item first.", "Info", MB_OK);
         }
 
-
-
         if (LOWORD(wParam) == IDC_SPEEDTEST) {
 
     // currentPath already exists in your file, like "E:\\some\\folder\\"
@@ -296,7 +294,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     Logger::Info(std::string("GUI: Speed test requested for drive ") + drive);
 
     std::thread([hwnd, drive]() {
-        auto res = USBTester::TestSpeed(drive, 1024, false);
+        auto res = USBTester::TestSpeed(drive, 256, false);
 
         // Re-enable button on UI thread
         PostMessage(hwnd, WM_APP + 1, 0, 0);
@@ -319,13 +317,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     break; // IMPORTANT: stop processing WM_COMMAND
 }
 
-        
 
         break;
 
     case WM_DEVICECHANGE: RefreshView(hwnd); break;
     case WM_DESTROY: PostQuitMessage(0); break;
-
 
     case WM_APP + 1:
 {
@@ -333,14 +329,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return 0;
 }
 
-
     }
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow) {
-
-
     Logger::Init("usbtool.log");
     Logger::Info("GUI app started");
 
