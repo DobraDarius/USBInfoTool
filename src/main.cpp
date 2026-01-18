@@ -29,7 +29,7 @@ int main() {
 >>>>>>> ee175ca (Added speed test and updated UI)
     USBManager usbManager;
     std::string command;
-    char selectedDrive = 0; 
+    char selectedDrive = 0;
 
     std::cout << "=== USB Storage Management Tool ===\n";
     std::cout << "Type 'help' for a list of commands.\n\n";
@@ -48,8 +48,8 @@ int main() {
         // 3. Process command
         if (command == "exit") {
             std::cout << "Exiting application...\n";
-            break; 
-        } 
+            break;
+        }
         else if (command == "help") {
             if (selectedDrive == 0) printHelp();
             else printDriveHelp();
