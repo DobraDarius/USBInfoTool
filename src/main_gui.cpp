@@ -9,16 +9,11 @@
 #include <vector>
 #include <cstdio>
 #include <algorithm>
-<<<<<<< HEAD
 #include "USBManager.h"
-=======
 #include "USBTester.h"
 #include "USBManager.h"
 #include "Logger.h"
 #include <thread>
-
->>>>>>> ee175ca (Added speed test and updated UI)
-
 #pragma comment(lib, "Comctl32.lib")
 
 #define ID_LISTVIEW 100
@@ -28,11 +23,8 @@
 #define ID_BTN_RENAME 104
 #define ID_SEARCH_BOX 105
 #define ID_BTN_MKFILE 106 // ID NOU
-<<<<<<< HEAD
-=======
 #define IDC_SPEEDTEST 2001
 
->>>>>>> ee175ca (Added speed test and updated UI)
 
 // --- INPUT BOX FIX (Varianta Anti-Freeze) ---
 char inputBuffer[256];
@@ -199,8 +191,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         CreateWindow("STATIC", "Search:", WS_CHILD | WS_VISIBLE, 350, 15, 50, 20, hwnd, NULL, NULL, NULL);
         hSearchBox = CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 400, 12, 170, 25, hwnd, (HMENU)ID_SEARCH_BOX, NULL, NULL);
 
-<<<<<<< HEAD
-=======
+
+
         CreateWindowA(
         "BUTTON",
         "Speed Test",
@@ -212,7 +204,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         NULL
     );
 
->>>>>>> ee175ca (Added speed test and updated UI)
+
         RefreshView(hwnd);
         break;
 
@@ -286,8 +278,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                 }
             } else MessageBox(hwnd, "Select an item first.", "Info", MB_OK);
         }
-<<<<<<< HEAD
-=======
+
+
 
         if (LOWORD(wParam) == IDC_SPEEDTEST) {
 
@@ -328,30 +320,30 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 }
 
         
->>>>>>> ee175ca (Added speed test and updated UI)
+
         break;
 
     case WM_DEVICECHANGE: RefreshView(hwnd); break;
     case WM_DESTROY: PostQuitMessage(0); break;
-<<<<<<< HEAD
-=======
+
+
     case WM_APP + 1:
 {
     EnableWindow(GetDlgItem(hwnd, IDC_SPEEDTEST), TRUE);
     return 0;
 }
 
->>>>>>> ee175ca (Added speed test and updated UI)
+
     }
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow) {
-<<<<<<< HEAD
-=======
+
+
     Logger::Init("usbtool.log");
     Logger::Info("GUI app started");
->>>>>>> ee175ca (Added speed test and updated UI)
+
     WNDCLASSA wc = {0}; wc.lpfnWndProc = WndProc; wc.hInstance = hInst; wc.lpszClassName = "USBManMax";
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1); RegisterClassA(&wc);
     int x = (GetSystemMetrics(SM_CXSCREEN)-600)/2; int y = (GetSystemMetrics(SM_CYSCREEN)-450)/2;

@@ -1,11 +1,8 @@
 #include <iostream>
 #include <string>
+#include <cctype>
 #include "USBManager.h"
-<<<<<<< HEAD
-=======
 #include "Logger.h"
-
->>>>>>> ee175ca (Added speed test and updated UI)
 
 void printHelp() {
     std::cout << "\nAvailable commands:\n";
@@ -22,11 +19,9 @@ void printDriveHelp() {
 }
 
 int main() {
-<<<<<<< HEAD
-=======
     Logger::Init("usbtool.log");
     Logger::Info("Console app started");
->>>>>>> ee175ca (Added speed test and updated UI)
+
     USBManager usbManager;
     std::string command;
     char selectedDrive = 0;
@@ -35,17 +30,14 @@ int main() {
     std::cout << "Type 'help' for a list of commands.\n\n";
 
     while (true) {
-        // here we display a prompt which resembles the terminal
         if (selectedDrive == 0) {
             std::cout << "USB-Tool > ";
         } else {
             std::cout << "USB-Tool (" << selectedDrive << ":) > ";
         }
 
-        // 2. Read command
         std::cin >> command;
 
-        // 3. Process command
         if (command == "exit") {
             std::cout << "Exiting application...\n";
             break;
@@ -63,56 +55,48 @@ int main() {
                 } else {
                     std::cout << "Connected Drives:\n";
                     for (auto& dev : devices) {
-                        std::cout << " - Drive " << dev.driveLetter << ": (" 
-                                  << dev.freeSpaceGB << " GB free / " 
+                        std::cout << " - Drive " << dev.driveLetter << ": ("
+                                  << dev.freeSpaceGB << " GB free / "
                                   << dev.totalSpaceGB << " GB total)\n";
                     }
                 }
-            } 
+            }
             else if (command == "select") {
                 char letter;
-                std::cin >> letter; // Read the drive letter
-                letter = toupper(letter); // Convert to uppercase
-                
-                // Simple validation could be added here
+                std::cin >> letter;
+                letter = static_cast<char>(std::toupper(static_cast<unsigned char>(letter)));
+
                 selectedDrive = letter;
                 std::cout << "Selected drive " << selectedDrive << "\n";
             }
             else {
                 std::cout << "Unknown command. Try 'list' or 'select <letter>'.\n";
             }
-        } 
+        }
         else {
             // --- DRIVE SPECIFIC COMMANDS ---
             if (command == "..") {
-                selectedDrive = 0; // Return to main menu
+                selectedDrive = 0;
                 std::cout << "Returned to main menu.\n";
             }
             else if (command == "ls") {
-<<<<<<< HEAD
-                // Calls the function from Week 3
-                usbManager.listFiles(selectedDrive);
+                std::string root = std::string(1, selectedDrive) + ":\\";
+                auto files = usbManager.getFiles(root);
+
+                if (files.empty()) {
+                    std::cout << "(No files or cannot access directory)\n";
+                } else {
+                    for (const auto& f : files) {
+                        std::cout << (f.isDirectory ? "[DIR] " : "      ")
+                                  << f.name;
+
+                        if (!f.isDirectory) {
+                            std::cout << " (" << f.size << " bytes)";
+                        }
+                        std::cout << "\n";
+                    }
+                }
             }
-=======
-    std::string root = std::string(1, selectedDrive) + ":\\";
-    auto files = usbManager.getFiles(root);
-
-    if (files.empty()) {
-        std::cout << "(No files or cannot access directory)\n";
-    } else {
-        for (const auto& f : files) {
-            std::cout << (f.isDirectory ? "[DIR] " : "      ")
-                      << f.name;
-
-            if (!f.isDirectory) {
-                std::cout << " (" << f.size << " bytes)";
-            }
-            std::cout << "\n";
-        }
-    }
-}
-
->>>>>>> ee175ca (Added speed test and updated UI)
             else if (command == "info") {
                 std::cout << "[Info feature in progress for drive " << selectedDrive << "]\n";
             }
