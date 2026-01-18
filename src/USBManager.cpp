@@ -4,8 +4,6 @@
 #include <filesystem>
 #include <algorithm>
 #include <fstream>
-
-
 #include "Logger.h"
 
 
@@ -49,10 +47,7 @@ USBDevice USBManager::getDriveInfo(char driveLetter) {
 
 std::vector<USBDevice> USBManager::detectUSBDevices() {
     std::vector<USBDevice> usbList;
-
-
     Logger::Info("Detecting USB devices...");
-
     DWORD drives = GetLogicalDrives();
     for (char c = 'A'; c <= 'Z'; c++) {
         if (drives & (1 << (c - 'A'))) {
