@@ -3,18 +3,31 @@
 
 #include <vector>
 #include <string>
+#include <cstdint>
 
 struct USBDevice {
     char driveLetter;
-    std::string label;   // NEW: Stores "KINGSTON", "USB_STICK", etc.
+    std::string label;
     double totalSpaceGB;
     double freeSpaceGB;
+};
+
+struct FileEntry {
+    std::string name;
+    std::string path;
+    uintmax_t size;
+    bool isDirectory;
 };
 
 class USBManager {
 public:
     std::vector<USBDevice> detectUSBDevices();
-    void listFiles(char driveLetter);
+    
+    std::vector<FileEntry> getFiles(std::string path);
+    bool deleteFile(std::string path);
+    std::string createAutoFolder(std::string currentPath);
+    bool renameEntry(std::string oldPath, std::string newName);
+    bool createFile(std::string currentPath, std::string fileName);
 
 private:
     bool isUSBDrive(char driveLetter);
